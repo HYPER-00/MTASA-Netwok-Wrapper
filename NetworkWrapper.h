@@ -97,9 +97,7 @@ public:
 
 	void RegisterPacketHandler(PacketHandler packetHandler);
 
-	void RegisterPacketQueue(PyPacket* pPackets);
-
-	bool StartListening(PacketHandler packetHandler);
+	bool StartListening();
 
 	void Send(unsigned long address, unsigned char packetId, unsigned short bitStreamVersion, const char* payload, unsigned long payloadSize, unsigned char priority, unsigned char reliability);
 

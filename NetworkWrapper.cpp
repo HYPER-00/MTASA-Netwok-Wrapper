@@ -123,24 +123,11 @@ void MTANetworkWrapper::Start() {
 
 void MTANetworkWrapper::RegisterPacketHandler(PacketHandler packetHandler)
 {
-    std::lock_guard<std::mutex> lock(mtx);
-    messageQueue.push(packetHandler);
-    cv.notify_one();
-
-    //m_PacketHandler = packetHandler;
-    //m_PacketHandler(0, 0, 0);
-}
-
-void MTANetworkWrapper::RegisterPacketQueue(PyPacket* pPackets)
-{
-    *g_PacketsQueue = *pPackets;
-    //g_PacketsQueue[g_usPacketIndex] = *pPackets;
-    g_usPacketIndex++;
-}
-
-bool MTANetworkWrapper::StartListening(PacketHandler packetHandler)
-{
     m_PacketHandler = packetHandler;
+}
+
+bool MTANetworkWrapper::StartListening()
+{
     const char* szBuffer = const_cast<const char*>(m_PacketBuffer);
 
     std::stringstream ss;
@@ -155,7 +142,7 @@ bool MTANetworkWrapper::StartListening(PacketHandler packetHandler)
     {
         printf(ss.str().c_str());
     }
-    packetHandler(m_uiPacket, m_ulPlayerListAddress, szBuffer);
+    m_PacketHandler(m_uiPacket, m_ulPlayerListAddress, szBuffer);
     m_uiPacket = 0U;
     m_ulPlayerListAddress = 0UL;
     return true;

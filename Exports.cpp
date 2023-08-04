@@ -28,18 +28,9 @@ MTAEXPORT void RegisterPacketHandler(unsigned short usID, PacketHandler packetHa
     MTANetworkWrapper::GetNetWrapper(usID)->RegisterPacketHandler(packetHandler);
 }
 
-MTAEXPORT void RegisterPacketQueue(unsigned short usID, PyPacket* pPackets)
+MTAEXPORT bool StartListening(ushort usId)
 {
-    printf("Called\n");
-    std::cout << "EXPORTS: PacketQueue Size: " << sizeof pPackets << "\n";
-    pPackets[0].ucPacketID *= 5;
-
-    MTANetworkWrapper::GetNetWrapper(usID)->RegisterPacketQueue(pPackets);
-}
-
-MTAEXPORT bool StartListening(ushort usId, PacketHandler packetHandler)
-{
-    return MTANetworkWrapper::GetNetWrapper(usId)->StartListening(packetHandler);
+    return MTANetworkWrapper::GetNetWrapper(usId)->StartListening();
 }
 
 MTAEXPORT void Send(unsigned short usID, unsigned long address, unsigned int packetId, unsigned short bitStreamVersion, const char* payload, unsigned long payloadSize, unsigned char priority, unsigned char reliability)
