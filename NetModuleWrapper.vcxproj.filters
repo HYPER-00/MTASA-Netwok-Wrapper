@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="mta\core\CDynamicLibrary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Exports.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mta\core\CCrashHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\core\CCrashHandlerAPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\core\CDynamicLibrary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\core\CExceptionInformation_Impl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\core\CModManagerImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\core\CServerImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\core\CThreadCommandQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\core\ErrorCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\core\StdInc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\core\CExceptionInformation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\core\CModManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\core\CServerBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\core\CServerInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\net\CNetServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\net\ns_common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\net\ns_playerid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\MTAPlatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\net\bitstream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\net\CNetHTTPDownloadManagerInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\net\packetenums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\net\Packets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\net\rpc_enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\net\SyncStructures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\xml\CXML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\xml\CXMLAttribute.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\xml\CXMLAttributes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\xml\CXMLCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\xml\CXMLErrorCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\xml\CXMLFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\xml\CXMLNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CChecksum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CDuplicateLineFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CFastList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CMatrix_Pad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CMatrix4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CMtaVersion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CRect2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CScriptArgReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CSphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CStringMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CVector2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\CVector4D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\RTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\sha1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\sha1.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\sha2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\sha2.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.AllocTracking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.AllocTracking.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.AsyncTaskScheduler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.AsyncTaskScheduler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Buffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.ClassIdent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Crypto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.FastHashMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.FastHashSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.File.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.File.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Game.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Hash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Hash.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.HashMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.IntervalCounter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.IntervalCounter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Legacy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Logging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Logging.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.MemAccess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.MemAccess.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Misc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Misc.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Profiling.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Profiling.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.SysInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.SysInfo.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Tests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Thread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.ThreadPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Time.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SharedUtil.Win32Utf8FileHooks.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\SString.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\UTF8.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\UTF8Detect.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\WString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\WString.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mta\sdk\profiler\SharedUtilUtil.Profiler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\cpython\pytime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\internal\pycore_accu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\cellobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\classobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\code.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\eval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\funcobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\genobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\longintrepr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\namespaceobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\pystrhex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\token.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Python\tracemalloc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

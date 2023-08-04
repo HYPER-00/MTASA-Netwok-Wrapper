@@ -1,0 +1,7 @@
+
+*.vsidx
+*.lock
+*.db
+.vs/
+Release/
+x64/
