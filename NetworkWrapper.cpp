@@ -8,8 +8,6 @@ std::mutex mtx;
 std::condition_variable cv;
 std::queue<PacketHandler> messageQueue;
 
-PyPacket g_PacketsQueue[4096];
-unsigned short g_usPacketIndex = 0;
 
 bool __stdcall staticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& Socket, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo)
 {
