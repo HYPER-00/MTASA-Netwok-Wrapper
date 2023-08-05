@@ -17,13 +17,6 @@ bool __stdcall staticPacketHandler(unsigned char ucPacketID, const NetServerPlay
 
         try
         {
-            //std::cout << "Sizeof PyPacket: " << sizeof(PyPacket) << "\n";
-            //std::cout << "Sizeof g_PacketsQueue: " << sizeof(g_PacketsQueue) << "\n";
-            //std::cout << "Sizeof g_PacketsQueue[0]: " << sizeof(g_PacketsQueue[0]) << "\n";
-            //std::cout << "Length of g_PacketsQueue: " << sizeof(g_PacketsQueue) / sizeof(g_PacketsQueue[0]) << "\n";
-            //std::cout << "g_PacketsQueue[0].ucPacketID: " << (unsigned int)g_PacketsQueue[0].ucPacketID << "\n";
-            //std::cout << "                        ---------------                      \n";
-
             g_PacketsQueue[g_usPacketIndex] = { ucPacketID, Socket.GetBinaryAddress(), 0 };
             g_usPacketIndex++;
         }
