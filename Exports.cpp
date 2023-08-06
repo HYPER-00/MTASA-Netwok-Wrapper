@@ -34,9 +34,9 @@ MTAEXPORT PyPacket GetLastPackets(ushort usId)
     return MTANetworkWrapper::GetNetWrapper(usId)->GetLastPackets();
 }
 
-MTAEXPORT void Send(unsigned short usID, unsigned long address, unsigned int packetId, unsigned short bitStreamVersion, const char* payload, unsigned long payloadSize, unsigned char priority, unsigned char reliability)
+MTAEXPORT void Send(unsigned short usID, unsigned long ulAddress, unsigned int uiPacketId, unsigned short usBitStreamVersion, const char* szData, unsigned long ulDataSize, unsigned char ucPriority, unsigned char ucReliability)
 {
-    MTANetworkWrapper::GetNetWrapper(usID)->Send(address, packetId, bitStreamVersion, payload, payloadSize, priority, reliability);
+    MTANetworkWrapper::GetNetWrapper(usID)->Send(ulAddress, uiPacketId, usBitStreamVersion, szData, ulDataSize, ucPriority, ucReliability);
 }
 
 MTAEXPORT void SetNetworkVersion(unsigned short usID, unsigned long address, unsigned short version)
