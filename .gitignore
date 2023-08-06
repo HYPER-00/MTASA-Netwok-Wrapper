@@ -5,3 +5,10 @@
 .vs/
 Release/
 x64/
+*.tlog
+*.obj
+*.log
+*.idb
+*.pdb
+*.recipe
+*.ilk
