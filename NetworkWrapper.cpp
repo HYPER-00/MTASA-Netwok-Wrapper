@@ -10,7 +10,7 @@ std::queue<PacketHandler> messageQueue;
 
 PacketHandler g_PacketHandler = nullptr;
 
-bool __stdcall staticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& Socket, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo)
+bool staticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& Socket, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo)
 {
     return MTANetworkWrapper::GetNetWrapper(Socket)->StaticPacketHandler(ucPacketID, Socket, pBitStream, pNetExtraInfo);
 }
@@ -30,16 +30,16 @@ bool MTANetworkWrapper::StaticPacketHandler(unsigned char ucPacketID, const NetS
         m_szPacketBuffer = static_cast<const char*>(szBuffer);
         m_uiPacketIndex++;
 
-        std::stringstream ss; ss << "\n=============== C++ =======================\n[";
-        for (int i = 0; i <= strlen(m_szPacketBuffer); i++)
-        {
-            ss << (int)m_szPacketBuffer[i] << ", ";
-        }
-        ss << "]\n";
-        if (ucPacketID == 3)
-        {
-            printf(ss.str().c_str());
-        }
+        //std::stringstream ss; ss << "\n=============== C++ =======================\n[";
+        //for (int i = 0; i <= strlen(m_szPacketBuffer); i++)
+        //{
+        //    ss << (int)m_szPacketBuffer[i] << ", ";
+        //}
+        //ss << "]\n";
+        //if (ucPacketID == 3)
+        //{
+        //    printf(ss.str().c_str());
+        //}
 
         //bool hasPing = false;
         //unsigned int ping = 0;
