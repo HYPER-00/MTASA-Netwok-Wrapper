@@ -20,14 +20,15 @@
 #define __stdcall
 #endif
 
-typedef void(__stdcall* PacketHandler)(unsigned char, unsigned long, const char*);
+typedef bool(__stdcall* PacketHandler)(unsigned char, unsigned long, const char*);
 typedef bool(*PacketCallback)(unsigned short, PacketHandler, bool, bool);
 
 struct PyPacket
 {
-	unsigned char ucPacketID;
+	unsigned int  uiPacketIndex;
+	unsigned int  uiPacketID;
 	unsigned long ulPlayerBinaryAddress;
-	const char* szPacketBuffer;
+	const char*   szPacketBuffer;
 };
 
 struct Packet
@@ -40,13 +41,6 @@ struct Packet
 
 	Packet(NetServerPlayerID socket, unsigned char packetId, NetBitStreamInterface* bitStream, unsigned char priority, unsigned char reliability)
 		: player(socket), ucPacketID(packetId), pBitStream(bitStream), ucPriority(priority), ucReliability(reliability) {}
-};
-
-struct ListenPacket
-{
-	unsigned int uiPacket;
-	unsigned long lPlayer;
-	char buffer[4096];
 };
 
 struct SerialExtraAndVersion
@@ -71,10 +65,10 @@ private:
 	PacketHandler m_PacketHandler;
 	CDynamicLibrary m_NetworkLibLoader;
 
-	unsigned int m_uiPacket;
-	unsigned long m_ulPlayerListAddress;
-	char	 m_PacketBuffer[4096];
-
+	unsigned int m_uiPacketIndex;
+	unsigned int  m_uiPacket = 0;
+	unsigned long m_ulPlayerListAddress = 0;
+	const char*	  m_szPacketBuffer;
 
 	CNetServer* m_pNetwork;
 	std::map<ulong, NetServerPlayerID> m_Players;
@@ -87,6 +81,7 @@ private:
 
 	void PulseLoop();
 	void MainLoop();
+	void __stdcall ListenerThread();
 public:
 	MTANetworkWrapper();
 
@@ -97,7 +92,7 @@ public:
 
 	void RegisterPacketHandler(PacketHandler packetHandler);
 
-	bool StartListening();
+	PyPacket GetLastPackets();
 
 	void Send(unsigned long address, unsigned char packetId, unsigned short bitStreamVersion, const char* payload, unsigned long payloadSize, unsigned char priority, unsigned char reliability);
 

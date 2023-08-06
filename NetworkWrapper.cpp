@@ -8,34 +8,10 @@ std::mutex mtx;
 std::condition_variable cv;
 std::queue<PacketHandler> messageQueue;
 
+PacketHandler g_PacketHandler = nullptr;
 
 bool __stdcall staticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& Socket, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo)
 {
-    if (g_PacketsQueue)
-    {
-        printf("g_PacketsQueue is not nullptr\n");
-
-        try
-        {
-            //std::cout << "Sizeof PyPacket: " << sizeof(PyPacket) << "\n";
-            //std::cout << "Sizeof g_PacketsQueue: " << sizeof(g_PacketsQueue) << "\n";
-            //std::cout << "Sizeof g_PacketsQueue[0]: " << sizeof(g_PacketsQueue[0]) << "\n";
-            //std::cout << "Length of g_PacketsQueue: " << sizeof(g_PacketsQueue) / sizeof(g_PacketsQueue[0]) << "\n";
-            //std::cout << "g_PacketsQueue[0].ucPacketID: " << (unsigned int)g_PacketsQueue[0].ucPacketID << "\n";
-            //std::cout << "                        ---------------                      \n";
-
-            g_PacketsQueue[g_usPacketIndex] = { ucPacketID, Socket.GetBinaryAddress(), 0 };
-            g_usPacketIndex++;
-        }
-        catch (const std::exception&)
-        {
-            printf("exce^t\n");
-        }
-    }
-    else
-    {
-        printf("g_PacketsQueue is nullptr\n");
-    }
     return MTANetworkWrapper::GetNetWrapper(Socket)->StaticPacketHandler(ucPacketID, Socket, pBitStream, pNetExtraInfo);
 }
 
@@ -48,8 +24,22 @@ bool MTANetworkWrapper::StaticPacketHandler(unsigned char ucPacketID, const NetS
         m_ulPlayerListAddress = player.GetBinaryAddress();
         uint uiByteCount = pBitStream->GetNumberOfBytesUsed();
 
-        char* buffer = new char[uiByteCount];
-        pBitStream->Read(m_PacketBuffer, uiByteCount);
+        char* szBuffer = new char[uiByteCount];
+        pBitStream->Read(szBuffer, uiByteCount);
+
+        m_szPacketBuffer = static_cast<const char*>(szBuffer);
+        m_uiPacketIndex++;
+
+        std::stringstream ss; ss << "\n=============== C++ =======================\n[";
+        for (int i = 0; i <= strlen(m_szPacketBuffer); i++)
+        {
+            ss << (int)m_szPacketBuffer[i] << ", ";
+        }
+        ss << "]\n";
+        if (ucPacketID == 3)
+        {
+            printf(ss.str().c_str());
+        }
 
         //bool hasPing = false;
         //unsigned int ping = 0;
@@ -57,7 +47,7 @@ bool MTANetworkWrapper::StaticPacketHandler(unsigned char ucPacketID, const NetS
         //    hasPing = true;
         //    ping = pNetExtraInfo->m_uiPing;
         //}
-        //delete buffer;
+        delete szBuffer;
     }
     return true;
 }
@@ -121,29 +111,33 @@ void MTANetworkWrapper::Start() {
 
 void MTANetworkWrapper::RegisterPacketHandler(PacketHandler packetHandler)
 {
-    m_PacketHandler = packetHandler;
+    g_PacketHandler = packetHandler;
+    m_PacketHandler(0, 0, 0);
 }
 
-bool MTANetworkWrapper::StartListening()
+PyPacket MTANetworkWrapper::GetLastPackets()
 {
-    const char* szBuffer = const_cast<const char*>(m_PacketBuffer);
+    return { m_uiPacketIndex, m_uiPacket, m_ulPlayerListAddress, m_szPacketBuffer };
+}
 
-    std::stringstream ss;
-    ss << "================== C++ ==================\n";
-    ss << "[";
-    for (int i = 0; i <= strlen(szBuffer); i++)
+void MTANetworkWrapper::ListenerThread()
+{
+    if (m_PacketHandler != nullptr)
     {
-        ss << (int)szBuffer[i] << ", ";
+        while (1)
+        {
+            printf("here\n");
+            const char* szBuffer = const_cast<const char*>(m_szPacketBuffer);
+            printf("szBuffer\n");
+            if (g_PacketHandler(m_uiPacket, m_ulPlayerListAddress, "szBuffer"))
+            {
+                printf("here2\n");
+                m_uiPacket = 0U;
+                m_ulPlayerListAddress = 0UL;
+            }
+            printf("here3\n");
+        }
     }
-    ss << "]\n================== ==================\n";
-    if ((int)m_uiPacket == 3)
-    {
-        printf(ss.str().c_str());
-    }
-    m_PacketHandler(m_uiPacket, m_ulPlayerListAddress, szBuffer);
-    m_uiPacket = 0U;
-    m_ulPlayerListAddress = 0UL;
-    return true;
 }
 
 void MTANetworkWrapper::Send(unsigned long address, unsigned char packetId, unsigned short bitStreamVersion, const char* payload, unsigned long payloadSize, unsigned char priority, unsigned char reliability)

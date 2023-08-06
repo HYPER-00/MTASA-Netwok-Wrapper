@@ -25,12 +25,13 @@ MTAEXPORT void Start(unsigned short usID)
 
 MTAEXPORT void RegisterPacketHandler(unsigned short usID, PacketHandler packetHandler)
 {
+    packetHandler(0, 0, 0);
     MTANetworkWrapper::GetNetWrapper(usID)->RegisterPacketHandler(packetHandler);
 }
 
-MTAEXPORT bool StartListening(ushort usId)
+MTAEXPORT PyPacket GetLastPackets(ushort usId)
 {
-    return MTANetworkWrapper::GetNetWrapper(usId)->StartListening();
+    return MTANetworkWrapper::GetNetWrapper(usId)->GetLastPackets();
 }
 
 MTAEXPORT void Send(unsigned short usID, unsigned long address, unsigned int packetId, unsigned short bitStreamVersion, const char* payload, unsigned long payloadSize, unsigned char priority, unsigned char reliability)
