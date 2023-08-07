@@ -1,18 +1,12 @@
 #include <iostream>
+#include <sstream>
+
 #include "MTAStuff/sdk/SharedUtil.h"
 #include "MTAStuff/core/CDynamicLibrary.h"
-#include "MTAStuff/sdk/core/CServerInterface.h"
 #include "MTAStuff/sdk/SharedUtil.h"
 #include "MTAStuff/sdk/net/Packets.h"
 #include "MTAStuff/sdk/net/bitstream.h"
 #include "MTAStuff/sdk/net/CNetServer.h"
-#include <bitset>
-#include <map>
-#include <iomanip>
-#include <sstream>
-#include <queue>
-#include <mutex>
-#include <functional>
 
 #include "Utils.h"
 

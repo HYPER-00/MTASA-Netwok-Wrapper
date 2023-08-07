@@ -4,7 +4,6 @@ uint16_t MTANetworkWrapper::nextId;
 std::map<uint16_t, MTANetworkWrapper*> MTANetworkWrapper::netWrappers;
 std::map<NetServerPlayerID, MTANetworkWrapper*> MTANetworkWrapper::netWrappersPerSocket;
 
-
 bool staticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& Socket, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo)
 {
     return MTANetworkWrapper::GetNetWrapper(Socket)->StaticPacketHandler(ucPacketID, Socket, pBitStream, pNetExtraInfo);
