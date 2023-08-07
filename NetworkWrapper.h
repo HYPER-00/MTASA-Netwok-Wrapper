@@ -81,7 +81,6 @@ private:
 
 	void PulseLoop();
 	void MainLoop();
-	void __stdcall ListenerThread();
 public:
 	MTANetworkWrapper();
 

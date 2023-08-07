@@ -116,26 +116,6 @@ PyPacket MTANetworkWrapper::GetLastPackets()
     return { m_uiPacketIndex, m_uiPacket, m_ulPlayerListAddress, m_szPacketBuffer };
 }
 
-void MTANetworkWrapper::ListenerThread()
-{
-    if (m_PacketHandler != nullptr)
-    {
-        while (1)
-        {
-            printf("here\n");
-            const char* szBuffer = const_cast<const char*>(m_szPacketBuffer);
-            printf("szBuffer\n");
-            if (g_PacketHandler(m_uiPacket, m_ulPlayerListAddress, "szBuffer"))
-            {
-                printf("here2\n");
-                m_uiPacket = 0U;
-                m_ulPlayerListAddress = 0UL;
-            }
-            printf("here3\n");
-        }
-    }
-}
-
 void MTANetworkWrapper::Send(unsigned long address, unsigned char packetId, unsigned short bitStreamVersion, const char* payload, unsigned long payloadSize, unsigned char priority, unsigned char reliability)
 {
     NetBitStreamInterface* bitStream = m_pNetwork->AllocateNetServerBitStream(bitStreamVersion);
