@@ -65,10 +65,10 @@ private:
 	PacketHandler m_PacketHandler;
 	CDynamicLibrary m_NetworkLibLoader;
 
-	unsigned int m_uiPacketIndex;
+	unsigned int  m_uiPacketIndex;
 	unsigned int  m_uiPacket = 0;
 	unsigned long m_ulPlayerListAddress = 0;
-	const char*	  m_szPacketBuffer;
+	const char*         m_szPacketBuffer;
 
 	CNetServer* m_pNetwork;
 	std::map<ulong, NetServerPlayerID> m_Players;

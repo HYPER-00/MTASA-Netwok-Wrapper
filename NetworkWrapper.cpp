@@ -25,21 +25,23 @@ bool MTANetworkWrapper::StaticPacketHandler(unsigned char ucPacketID, const NetS
         uint uiByteCount = pBitStream->GetNumberOfBytesUsed();
 
         char* szBuffer = new char[uiByteCount];
+        printf("in\n");
         pBitStream->Read(szBuffer, uiByteCount);
+        printf("out\n");
 
-        m_szPacketBuffer = static_cast<const char*>(szBuffer);
+        m_szPacketBuffer = (const char*)szBuffer;
         m_uiPacketIndex++;
 
-        //std::stringstream ss; ss << "\n=============== C++ =======================\n[";
-        //for (int i = 0; i <= strlen(m_szPacketBuffer); i++)
+        //if (m_uiPacket == 3)
         //{
-        //    ss << (int)m_szPacketBuffer[i] << ", ";
+        //    printf("\n=============== C++ =======================\n[");
+        //    for (int i = 0; i <= strlen(m_szPacketBuffer); i++)
+        //    {
+        //        printf("%x, ", (int)m_szPacketBuffer[i]);
+        //    }
+        //    printf("]\n");
         //}
-        //ss << "]\n";
-        //if (ucPacketID == 3)
-        //{
-        //    printf(ss.str().c_str());
-        //}
+
 
         //bool hasPing = false;
         //unsigned int ping = 0;
