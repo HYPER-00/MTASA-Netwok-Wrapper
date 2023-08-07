@@ -4,11 +4,6 @@ uint16_t MTANetworkWrapper::nextId;
 std::map<uint16_t, MTANetworkWrapper*> MTANetworkWrapper::netWrappers;
 std::map<NetServerPlayerID, MTANetworkWrapper*> MTANetworkWrapper::netWrappersPerSocket;
 
-std::mutex mtx;
-std::condition_variable cv;
-std::queue<PacketHandler> messageQueue;
-
-PacketHandler g_PacketHandler = nullptr;
 
 bool staticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& Socket, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo)
 {
