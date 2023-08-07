@@ -111,12 +111,6 @@ void MTANetworkWrapper::Start() {
     m_MainThread = std::thread(&MTANetworkWrapper::MainLoop, this);
 }
 
-void MTANetworkWrapper::RegisterPacketHandler(PacketHandler packetHandler)
-{
-    g_PacketHandler = packetHandler;
-    m_PacketHandler(0, 0, 0);
-}
-
 PyPacket MTANetworkWrapper::GetLastPackets()
 {
     return { m_uiPacketIndex, m_uiPacket, m_ulPlayerListAddress, m_szPacketBuffer };

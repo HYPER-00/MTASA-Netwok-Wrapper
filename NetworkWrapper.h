@@ -90,8 +90,6 @@ public:
 
 	void Start();
 
-	void RegisterPacketHandler(PacketHandler packetHandler);
-
 	PyPacket GetLastPackets();
 
 	void Send(unsigned long address, unsigned char packetId, unsigned short bitStreamVersion, const char* payload, unsigned long payloadSize, unsigned char priority, unsigned char reliability);
