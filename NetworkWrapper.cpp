@@ -19,19 +19,18 @@ bool MTANetworkWrapper::StaticPacketHandler(unsigned char ucPacketID, const NetS
         uint uiByteCount = pBitStream->GetNumberOfBytesUsed();
 
         char* szBuffer = new char[uiByteCount];
-        printf("in\n");
         pBitStream->Read(szBuffer, uiByteCount);
-        printf("out\n");
 
         m_szPacketBuffer = (const char*)szBuffer;
         m_uiPacketIndex++;
+        
 
         //if (m_uiPacket == 3)
         //{
         //    printf("\n=============== C++ =======================\n[");
-        //    for (int i = 0; i <= strlen(m_szPacketBuffer); i++)
+        //    for (int i = 0; i <= strlen(szBuffer); i++)
         //    {
-        //        printf("%x, ", (int)m_szPacketBuffer[i]);
+        //        printf("%d, ", (int)szBuffer[i]);
         //    }
         //    printf("]\n");
         //}
@@ -82,7 +81,7 @@ bool MTANetworkWrapper::Setup(const char* szServerIdPath, const char* szNetLibPa
     {
         Utils::Error("Couldn't Find Network Library Initializer (Mabye Corrupted DLL Or An Old Version, Try to update your package)");
     }
-
+ 
     m_pNetwork = pfnInitNetServerInterface();
 
     if (!m_pNetwork->InitServerId(szServerIdPath))
@@ -107,25 +106,45 @@ void MTANetworkWrapper::Start() {
 
 PyPacket MTANetworkWrapper::GetLastPackets()
 {
-    return { m_uiPacketIndex, m_uiPacket, m_ulPlayerListAddress, m_szPacketBuffer };
+    return { m_uiPacketIndex, m_uiPacket, m_ulPlayerListAddress, m_szPacketBuffer};
 }
 
-void MTANetworkWrapper::Send(unsigned long address, unsigned char packetId, unsigned short bitStreamVersion, const char* payload, unsigned long payloadSize, unsigned char priority, unsigned char reliability)
+void MTANetworkWrapper::Send(unsigned long ulAddress, unsigned char ucPacketId, unsigned short usBitStreamVersion, const char* szData, unsigned long ulDataSize, unsigned char ucPriority, unsigned char ucReliability)
 {
-    NetBitStreamInterface* bitStream = m_pNetwork->AllocateNetServerBitStream(bitStreamVersion);
-    if (bitStream)
+    NetBitStreamInterface* pBitStream = m_pNetwork->AllocateNetServerBitStream(usBitStreamVersion);
+    if (pBitStream)
     {
-        bitStream->Write(payload, payloadSize);
-        NetServerPlayerID& socket = m_Players[address];
+        pBitStream->Write(szData, ulDataSize);
+        NetServerPlayerID& socket = m_Players[ulAddress];
         mutex.lock();
-        m_Packets.push(Packet(socket, packetId, bitStream, priority, reliability));
+        m_Packets.push(Packet(socket, ucPacketId, pBitStream, ucPriority, ucReliability));
         mutex.unlock();
     }
 }
 
-void MTANetworkWrapper::SetNetworkVersion(unsigned long address, unsigned short version)
+bool MTANetworkWrapper::IsValidSocket(unsigned long ulAddress)
 {
-    m_pNetwork->SetClientBitStreamVersion(m_Players[address], version);
+    return m_pNetwork->IsValidSocket(m_Players[ulAddress]);
+}
+
+PlayerAddress MTANetworkWrapper::GetPlayerAddress(unsigned long ulAddress)
+{
+    PlayerAddress address;
+    if (m_pNetwork->IsValidSocket(m_Players[ulAddress]))
+    {
+        char szIP[22];
+        unsigned short* pusPort = 0;
+        m_pNetwork->GetPlayerIP(m_Players[ulAddress], szIP, pusPort);
+        address = { szIP, *pusPort };
+        return address;
+    }
+    Utils::Error("Invalid Player Binary Address");
+    return address;
+}
+
+void MTANetworkWrapper::SetClientBitStreamVersion(unsigned long ulAddress, unsigned short usVersion)
+{
+    m_pNetwork->SetClientBitStreamVersion(m_Players[ulAddress], usVersion);
 }
 
 void MTANetworkWrapper::SetAntiCheatChecks(const char* szDisableComboACMap, const char* szDisableACMap, const char* szEnableSDMap,
@@ -134,14 +153,14 @@ void MTANetworkWrapper::SetAntiCheatChecks(const char* szDisableComboACMap, cons
     this->m_pNetwork->SetChecks(szDisableComboACMap, szDisableACMap, szEnableSDMap, iEnableClientChecks, bHideAC, szImgMods);
 }
 
-void MTANetworkWrapper::GetAntiCheatInfo(unsigned long address)
+void MTANetworkWrapper::GetAntiCheatInfo(unsigned long ulAddress)
 {
-    m_pNetwork->ResendACPackets(m_Players[address]);
+    m_pNetwork->ResendACPackets(m_Players[ulAddress]);
 }
 
-SerialExtraAndVersion MTANetworkWrapper::GetClientData(unsigned long address)
+SerialExtraAndVersion MTANetworkWrapper::GetClientData(unsigned long ulAddress)
 {
-    auto socket = m_Players[address];
+    auto socket = m_Players[ulAddress];
 
     SFixedString<32> strSerialTemp;
     SFixedString<64> strExtraTemp;
@@ -156,9 +175,9 @@ SerialExtraAndVersion MTANetworkWrapper::GetClientData(unsigned long address)
     return result;
 }
 
-void MTANetworkWrapper::GetModPackets(unsigned long address)
+void MTANetworkWrapper::GetModPackets(unsigned long ulAddress)
 {
-    m_pNetwork->ResendModPackets(m_Players[address]);
+    m_pNetwork->ResendModPackets(m_Players[ulAddress]);
 }
 
 const char* MTANetworkWrapper::GetNetRoute()
@@ -271,9 +290,9 @@ bool MTANetworkWrapper::IsValidSocket(NetServerPlayerID id)
     return this->m_pNetwork->IsValidSocket(id);
 }
 
-MTANetworkWrapper* MTANetworkWrapper::GetNetWrapper(int id)
+MTANetworkWrapper* MTANetworkWrapper::GetNetWrapper(int iId)
 {
-    return MTANetworkWrapper::netWrappers[id];
+    return MTANetworkWrapper::netWrappers[iId];
 }
 MTANetworkWrapper* MTANetworkWrapper::GetNetWrapper(NetServerPlayerID id)
 {

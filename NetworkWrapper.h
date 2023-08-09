@@ -14,15 +14,13 @@
 #define __stdcall
 #endif
 
-typedef bool(__stdcall* PacketHandler)(unsigned char, unsigned long, const char*);
-typedef bool(*PacketCallback)(unsigned short, PacketHandler, bool, bool);
 
 struct PyPacket
 {
 	unsigned int  uiPacketIndex;
 	unsigned int  uiPacketID;
 	unsigned long ulPlayerBinaryAddress;
-	const char*   szPacketBuffer;
+	const char* szPacketBuffer;
 };
 
 struct Packet
@@ -47,6 +45,12 @@ struct SerialExtraAndVersion
 		: serial(serial), extra(extra), version(version) {}
 };
 
+struct PlayerAddress
+{
+	std::string strIP = "";
+	unsigned short usPort = 0;
+};
+
 class MTANetworkWrapper
 {
 private:
@@ -56,13 +60,12 @@ private:
 	static std::map<NetServerPlayerID, MTANetworkWrapper*> netWrappersPerSocket;
 
 	bool m_QueuedPacket = false;
-	PacketHandler m_PacketHandler;
 	CDynamicLibrary m_NetworkLibLoader;
 
 	unsigned int  m_uiPacketIndex;
 	unsigned int  m_uiPacket = 0;
 	unsigned long m_ulPlayerListAddress = 0;
-	const char*         m_szPacketBuffer;
+	const char*   m_szPacketBuffer;
 
 	CNetServer* m_pNetwork;
 	std::map<ulong, NetServerPlayerID> m_Players;
@@ -85,17 +88,21 @@ public:
 
 	PyPacket GetLastPackets();
 
-	void Send(unsigned long address, unsigned char packetId, unsigned short bitStreamVersion, const char* payload, unsigned long payloadSize, unsigned char priority, unsigned char reliability);
+	void Send(unsigned long ulAddress, unsigned char ucPacketId, unsigned short usBitStreamVersion, const char* szData, unsigned long ulDataSize, unsigned char ucPriority, unsigned char ucReliability);
 
-	void SetNetworkVersion(unsigned long address, unsigned short version);
+	bool IsValidSocket(unsigned long ulAddress);
+
+	PlayerAddress GetPlayerAddress(unsigned long ulAddress);
+
+	void SetClientBitStreamVersion(unsigned long ulAddress, unsigned short usVersion);
 
 	void SetAntiCheatChecks(const char* szDisableComboACMap, const char* szDisableACMap, const char* szEnableSDMap, int iEnableClientChecks, bool bHideAC, const char* szImgMods);
 
-	void GetAntiCheatInfo(unsigned long address);
+	void GetAntiCheatInfo(unsigned long ulAddress);
 
-	SerialExtraAndVersion GetClientData(unsigned long address);
+	SerialExtraAndVersion GetClientData(unsigned long ulAddress);
 
-	void  GetModPackets(unsigned long address);
+	void  GetModPackets(unsigned long ulAddress);
 
 	const char* GetNetRoute();
 
@@ -109,10 +116,10 @@ public:
 	void Destroy();
 
 	ushort GetId();
-	bool StaticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& Socket, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo);
+	bool StaticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& player, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo);
 	bool IsValidSocket(NetServerPlayerID id);
 
 
-	static MTANetworkWrapper* GetNetWrapper(int id);
+	static MTANetworkWrapper* GetNetWrapper(int iId);
 	static MTANetworkWrapper* GetNetWrapper(NetServerPlayerID id);
 };

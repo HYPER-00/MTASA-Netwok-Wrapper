@@ -33,9 +33,19 @@ MTAEXPORT void Send(unsigned short usID, unsigned long ulAddress, unsigned int u
     MTANetworkWrapper::GetNetWrapper(usID)->Send(ulAddress, uiPacketId, usBitStreamVersion, szData, ulDataSize, ucPriority, ucReliability);
 }
 
-MTAEXPORT void SetNetworkVersion(unsigned short usID, unsigned long address, unsigned short version)
+MTAEXPORT bool IsValidSocket(unsigned short usID, unsigned long ulAddress)
 {
-    MTANetworkWrapper::GetNetWrapper(usID)->SetNetworkVersion(address, version);
+    return MTANetworkWrapper::GetNetWrapper(usID)->IsValidSocket(ulAddress);
+}
+
+MTAEXPORT PlayerAddress GetPlayerAddress(unsigned short usID, unsigned long ulAddress)
+{
+    return MTANetworkWrapper::GetNetWrapper(usID)->GetPlayerAddress(ulAddress);
+}
+
+MTAEXPORT void SetClientBitStreamVersion(unsigned short usID, unsigned long address, unsigned short version)
+{
+    MTANetworkWrapper::GetNetWrapper(usID)->SetClientBitStreamVersion(address, version);
 }
 
 MTAEXPORT void SetAntiCheatChecks(unsigned short usID, const char* szDisableComboACMap, const char* szDisableACMap, const char* szEnableSDMap,
