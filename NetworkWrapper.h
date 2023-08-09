@@ -20,7 +20,7 @@ struct PyPacket
 	unsigned int  uiPacketIndex;
 	unsigned int  uiPacketID;
 	unsigned long ulPlayerBinaryAddress;
-	const char* szPacketBuffer;
+	const char*   szPacketBuffer;
 };
 
 struct Packet

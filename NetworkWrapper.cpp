@@ -106,7 +106,7 @@ void MTANetworkWrapper::Start() {
 
 PyPacket MTANetworkWrapper::GetLastPackets()
 {
-    return { m_uiPacketIndex, m_uiPacket, m_ulPlayerListAddress, m_szPacketBuffer};
+    return { m_uiPacketIndex, m_uiPacket, m_ulPlayerListAddress, m_szPacketBuffer };
 }
 
 void MTANetworkWrapper::Send(unsigned long ulAddress, unsigned char ucPacketId, unsigned short usBitStreamVersion, const char* szData, unsigned long ulDataSize, unsigned char ucPriority, unsigned char ucReliability)
