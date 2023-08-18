@@ -23,25 +23,6 @@ bool MTANetworkWrapper::StaticPacketHandler(unsigned char ucPacketID, const NetS
 
         m_szPacketBuffer = (const char*)szBuffer;
         m_uiPacketIndex++;
-        
-
-        //if (m_uiPacket == 3)
-        //{
-        //    printf("\n=============== C++ =======================\n[");
-        //    for (int i = 0; i <= strlen(szBuffer); i++)
-        //    {
-        //        printf("%d, ", (int)szBuffer[i]);
-        //    }
-        //    printf("]\n");
-        //}
-
-
-        //bool hasPing = false;
-        //unsigned int ping = 0;
-        //if (pNetExtraInfo != nullptr && pNetExtraInfo->m_bHasPing) {
-        //    hasPing = true;
-        //    ping = pNetExtraInfo->m_uiPing;
-        //}
         delete szBuffer;
     }
     return true;
