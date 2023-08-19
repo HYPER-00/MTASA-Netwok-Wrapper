@@ -1,6 +1,6 @@
 ﻿#include "NetworkWrapper.h"
 
-#if defined _WIN32
+#ifdef _WIN32
 #define MTAEXPORT extern "C" __declspec(dllexport)
 #else
 #define MTAEXPORT extern "C" __attribute__ ((visibility ("default")))
