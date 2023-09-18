@@ -74,21 +74,29 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\IronicMTA\core\lib\wrapper</OutDir>
     <TargetName>wrapper.$(PlatformTarget)</TargetName>
+    <ExternalIncludePath>C:\Program Files\Python311\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>C:\Program Files\Python311\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\IronicMTA\core\lib\wrapper</OutDir>
     <TargetName>wrapper.$(PlatformTarget)</TargetName>
+    <ExternalIncludePath>C:\Program Files\Python311\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>C:\Program Files\Python311\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\IronicMTA\core\lib\wrapper</OutDir>
     <TargetName>wrapper.$(PlatformTarget)</TargetName>
+    <ExternalIncludePath>C:\Program Files\Python311\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>C:\Program Files\Python311\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\IronicMTA\core\lib\wrapper</OutDir>
     <TargetName>wrapper.$(PlatformTarget)</TargetName>
+    <ExternalIncludePath>C:\Program Files\Python311\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>C:\Program Files\Python311\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -98,6 +106,7 @@
       <AdditionalIncludeDirectories>mta\sdk;mta\sdk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,6 +125,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,6 +147,7 @@
       <AdditionalIncludeDirectories>mta\sdk;mta\sdk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,6 +170,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -175,6 +187,7 @@
     <ClCompile Include="Exports.cpp" />
     <ClCompile Include="MTAStuff\core\CDynamicLibrary.cpp" />
     <ClCompile Include="NetworkWrapper.cpp" />
+    <ClCompile Include="Packets\PlayerJoinDataPacket.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +290,7 @@
     <ClInclude Include="mta\sdk\xml\CXMLFile.h" />
     <ClInclude Include="mta\sdk\xml\CXMLNode.h" />
     <ClInclude Include="NetworkWrapper.h" />
+    <ClInclude Include="Packets\PlayerJoinDataPacket.h" />
     <ClInclude Include="Python\cellobject.h" />
     <ClInclude Include="Python\classobject.h" />
     <ClInclude Include="Python\code.h" />
