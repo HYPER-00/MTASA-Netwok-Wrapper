@@ -18,7 +18,7 @@
 class CServerInterface
 {
 public:
-    virtual CNetServer*  GetNetwork() = 0;
+    virtual CNetServer*  get_network() = 0;
     virtual CModManager* GetModManager() = 0;
     virtual CXML*        GetXML() = 0;
 

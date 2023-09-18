@@ -21,7 +21,7 @@ public:
     ~CExceptionInformation_Impl();            //            {};
 
     unsigned int        GetCode() { return m_uiCode; };
-    void*               GetAddress() { return m_pAddress; };
+    void*               get_address() { return m_pAddress; };
     bool                GetModule(char* szModuleName, int nOutputNameLength, void** ppModuleBaseAddress);
     virtual const char* GetModulePathName() { return m_szModulePathName; };
     virtual const char* GetModuleBaseName() { return m_szModuleBaseName; };
