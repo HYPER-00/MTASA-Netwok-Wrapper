@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <tuple>
 
 #include "MTAStuff/sdk/SharedUtil.h"
 #include "MTAStuff/core/CDynamicLibrary.h"
@@ -8,20 +9,15 @@
 #include "MTAStuff/sdk/net/bitstream.h"
 #include "MTAStuff/sdk/net/CNetServer.h"
 
+#include <Python.h>
+
+#include "Packets/PlayerJoinDataPacket.h"
+
 #include "Utils.h"
 
 #ifndef WIN32
 #define __stdcall
 #endif
-
-
-struct PyPacket
-{
-	unsigned int  uiPacketIndex;
-	unsigned int  uiPacketID;
-	unsigned long ulPlayerBinaryAddress;
-	const char*   szPacketBuffer;
-};
 
 struct Packet
 {
@@ -65,7 +61,7 @@ private:
 	unsigned int  m_uiPacketIndex;
 	unsigned int  m_uiPacket = 0;
 	unsigned long m_ulPlayerListAddress = 0;
-	const char*   m_szPacketBuffer;
+	PyObject* m_pPacketData = nullptr;
 
 	CNetServer* m_pNetwork;
 	std::map<ulong, NetServerPlayerID> m_Players;
@@ -82,11 +78,11 @@ public:
 	MTANetworkWrapper();
 
 	bool Setup(const char* szServerIdPath, const char* szNetLibPath, const char* szIP, unsigned short usPort, unsigned int uiPlayerCount,
-		const char* szServerName, unsigned long* pulMtaVersionType);
+		const char* szServerName, unsigned long* pulMtaVersionType, PyObject* pFunction);
 
 	void Start();
 
-	PyPacket GetLastPackets();
+	PyObject* GetLastPackets();
 
 	void Send(unsigned long ulAddress, unsigned char ucPacketId, unsigned short usBitStreamVersion, const char* szData, unsigned long ulDataSize, unsigned char ucPriority, unsigned char ucReliability);
 

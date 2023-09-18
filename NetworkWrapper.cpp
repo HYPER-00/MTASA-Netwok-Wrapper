@@ -4,38 +4,56 @@ uint16_t MTANetworkWrapper::nextId;
 std::map<uint16_t, MTANetworkWrapper*> MTANetworkWrapper::netWrappers;
 std::map<NetServerPlayerID, MTANetworkWrapper*> MTANetworkWrapper::netWrappersPerSocket;
 
+SFixedString<32> pstrRoute;
+
+
 bool staticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& Socket, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo)
 {
+    printf("packet\n");
     return MTANetworkWrapper::GetNetWrapper(Socket)->StaticPacketHandler(ucPacketID, Socket, pBitStream, pNetExtraInfo);
 }
 
 bool MTANetworkWrapper::StaticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& player, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo)
 {
     m_Players[player.GetBinaryAddress()] = player;
-    if (m_bRunning)
+    if (true)
     {
         m_uiPacket = ucPacketID;
         m_ulPlayerListAddress = player.GetBinaryAddress();
-        uint uiByteCount = pBitStream->GetNumberOfBytesUsed();
 
-        char* szBuffer = new char[uiByteCount];
-        pBitStream->Read(szBuffer, uiByteCount);
+        if (pBitStream->GetNumberOfBitsUsed() > 0)
+        {
+            switch ((int)ucPacketID)
+            {
+            case PACKET_ID_PLAYER_JOINDATA:
+                m_pPacketData = CPlayerJoinDataPacket(*pBitStream);
+                break;
+            }
 
-        m_szPacketBuffer = (const char*)szBuffer;
-        m_uiPacketIndex++;
-        delete szBuffer;
+            if (m_pPacketData == nullptr)
+            {
+                printf("m_pPacketData is nullptr\n");
+            }
+            else
+            {
+                printf("m_pPacketData is not nullptr\n");
+            }
+            m_uiPacketIndex++;
+        }
     }
     return true;
 }
 
-MTANetworkWrapper::MTANetworkWrapper() {
+MTANetworkWrapper::MTANetworkWrapper()
+{
     this->usID = MTANetworkWrapper::nextId++;
     MTANetworkWrapper::netWrappers[this->usID] = this;
 }
 
 bool MTANetworkWrapper::Setup(const char* szServerIdPath, const char* szNetLibPath, const char* szIP, unsigned short usPort,
-    unsigned int uiPlayerCount, const char* szServerName, unsigned long* pulMtaVersionType)
+    unsigned int uiPlayerCount, const char* szServerName, unsigned long* pulMtaVersionType, PyObject* pFunction)
 {
+
     if (!m_NetworkLibLoader.Load(szNetLibPath))
     {
         std::stringstream description;
@@ -71,24 +89,33 @@ bool MTANetworkWrapper::Setup(const char* szServerIdPath, const char* szNetLibPa
     }
 
     m_pNetwork->RegisterPacketHandler(staticPacketHandler);
+
     if (!m_pNetwork->StartNetwork(szIP, usPort, uiPlayerCount, szServerName))
     {
         Utils::Error("Coudln't Start Network");
     }
+
     m_PulseThread = std::thread(&MTANetworkWrapper::PulseLoop, this);
+
     return true;
 }
 
-void MTANetworkWrapper::Start() {
+void MTANetworkWrapper::Start()
+{
     m_bRunning = true;
     m_PulseThread.join();
     m_MainThread = std::thread(&MTANetworkWrapper::MainLoop, this);
 }
 
-PyPacket MTANetworkWrapper::GetLastPackets()
+PyObject* MTANetworkWrapper::GetLastPackets()
 {
-    return { m_uiPacketIndex, m_uiPacket, m_ulPlayerListAddress, m_szPacketBuffer };
-}
+    PyObject* pTuple = PyTuple_New(4);
+    PyTuple_SetItem(pTuple, 0, PyLong_FromLong(m_uiPacket));
+    PyTuple_SetItem(pTuple, 1, PyLong_FromLong(m_ulPlayerListAddress));
+    PyTuple_SetItem(pTuple, 2, PyLong_FromLong(m_uiPacketIndex));
+    PyTuple_SetItem(pTuple, 3, m_pPacketData == nullptr ? PyLong_FromLong(0) : m_pPacketData);
+    return pTuple;
+}   
 
 void MTANetworkWrapper::Send(unsigned long ulAddress, unsigned char ucPacketId, unsigned short usBitStreamVersion, const char* szData, unsigned long ulDataSize, unsigned char ucPriority, unsigned char ucReliability)
 {
@@ -165,9 +192,15 @@ const char* MTANetworkWrapper::GetNetRoute()
 {
     if (m_bRunning)
     {
-        SFixedString<32> pstrRoute;
-        m_pNetwork->GetNetRoute(&pstrRoute);
-        return (const char*)pstrRoute;
+        try
+        {
+            m_pNetwork->GetNetRoute(&pstrRoute);
+            return (const char*)pstrRoute;
+        }
+        catch (const std::runtime_error&)
+        {
+            return "";
+        }
     }
     else
     {
@@ -208,7 +241,7 @@ SPacketStat MTANetworkWrapper::GetPacketStats()
     if (m_bRunning)
     {
         SPacketStat stats;
-        return *(m_pNetwork->GetPacketStats());
+        return *m_pNetwork->GetPacketStats();
     }
     else
     {
@@ -231,7 +264,8 @@ void MTANetworkWrapper::MainLoop()
     while (m_bRunning)
     {
         mutex.lock();
-        while (!m_Packets.empty()) {
+        while (!m_Packets.empty())
+        {
             Packet& entry = m_Packets.front();
             m_pNetwork->SendPacket(entry.ucPacketID, entry.player, entry.pBitStream, false, static_cast<NetServerPacketPriority>(entry.ucPriority), static_cast<NetServerPacketReliability>(entry.ucReliability));
             m_pNetwork->DeallocateNetServerBitStream(entry.pBitStream);
@@ -246,7 +280,8 @@ void MTANetworkWrapper::MainLoop()
 }
 
 
-void MTANetworkWrapper::Stop() {
+void MTANetworkWrapper::Stop()
+{
     m_bRunning = false;
     m_MainThread.join();
     m_PulseThread = std::thread(&MTANetworkWrapper::PulseLoop, this);
@@ -254,15 +289,13 @@ void MTANetworkWrapper::Stop() {
 
 void MTANetworkWrapper::Destroy()
 {
-
     MTANetworkWrapper::netWrappers.erase(this->usID);
-
-    for (auto kvPair : m_Players) {
-        MTANetworkWrapper::netWrappersPerSocket.erase(kvPair.second);
-    }
+    for (std::pair<const ulong, NetServerPlayerID> player:m_Players)
+        MTANetworkWrapper::netWrappersPerSocket.erase(player.second);
 }
 
-ushort MTANetworkWrapper::GetId() {
+ushort MTANetworkWrapper::GetId()
+{
     return this->usID;
 }
 
@@ -275,17 +308,20 @@ MTANetworkWrapper* MTANetworkWrapper::GetNetWrapper(int iId)
 {
     return MTANetworkWrapper::netWrappers[iId];
 }
-MTANetworkWrapper* MTANetworkWrapper::GetNetWrapper(NetServerPlayerID id)
+
+MTANetworkWrapper* MTANetworkWrapper::GetNetWrapper(NetServerPlayerID player)
 {
-    if (MTANetworkWrapper::netWrappersPerSocket.find(id) == MTANetworkWrapper::netWrappersPerSocket.end()) {
-        for (auto wrapper : netWrappers) {
-            if (wrapper.second->IsValidSocket(id)) {
-                MTANetworkWrapper::netWrappersPerSocket[id] = wrapper.second;
+    if (MTANetworkWrapper::netWrappersPerSocket.find(player) == MTANetworkWrapper::netWrappersPerSocket.end())
+    {
+        for (std::pair<const uint16_t, MTANetworkWrapper*> wrapper : netWrappers)
+        {
+            if (wrapper.second->IsValidSocket(player))
+            {
+                MTANetworkWrapper::netWrappersPerSocket[player] = wrapper.second;
                 return wrapper.second;
             }
         }
         return nullptr;
     }
-
-    return MTANetworkWrapper::netWrappersPerSocket[id];
+    return MTANetworkWrapper::netWrappersPerSocket[player];
 }
