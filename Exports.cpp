@@ -1,20 +1,22 @@
 ﻿#include "NetworkWrapper.h"
+#include <cstring>
 
-#ifdef _WIN32
+#if defined _WIN32
 #define MTAEXPORT extern "C" __declspec(dllexport)
 #else
 #define MTAEXPORT extern "C" __attribute__ ((visibility ("default")))
 #endif
 
 MTAEXPORT short Setup(const char* szServerIdPath, const char* szNetLibPath, const char* szIP, unsigned short usPort,
-    unsigned int uiPlayerCount, const char* szServerName, unsigned long* pulMtaVersionType)
+    unsigned int uiPlayerCount, const char* szServerName, unsigned long* pulMtaVersionType, PyObject* pFunction)
 {
-    auto wrapper = new MTANetworkWrapper();
-    if (!wrapper->Setup(szServerIdPath, szNetLibPath, szIP, usPort, uiPlayerCount, szServerName, pulMtaVersionType))
-    {
+
+    MTANetworkWrapper* pNetworkWrapper = new MTANetworkWrapper();
+    if (!pNetworkWrapper->Setup(szServerIdPath, szNetLibPath, szIP, usPort, uiPlayerCount, szServerName, pulMtaVersionType, pFunction))
         return -1;
-    }
-    return wrapper->GetId();
+    Py_Initialize();
+
+    return pNetworkWrapper->GetId();
 }
 
 MTAEXPORT void Start(unsigned short usID)
@@ -23,7 +25,12 @@ MTAEXPORT void Start(unsigned short usID)
     MTANetworkWrapper::GetNetWrapper(usID)->Start();
 }
 
-MTAEXPORT PyPacket GetLastPackets(unsigned short usID)
+MTAEXPORT PyObject* Test()
+{
+    return PyTuple_New(0);
+}
+
+MTAEXPORT PyObject* GetLastPackets(unsigned short usID)
 {
     return MTANetworkWrapper::GetNetWrapper(usID)->GetLastPackets();
 }
@@ -59,13 +66,13 @@ MTAEXPORT void GetAntiCheatInfo(unsigned short usID, unsigned long address)
     MTANetworkWrapper::GetNetWrapper(usID)->GetAntiCheatInfo(address);
 }
 
-MTAEXPORT void GetClientData(unsigned short usID, unsigned long address, char* serial, char* extra, char* version)
+MTAEXPORT void GetClientData(unsigned short usID, unsigned long ulAddress, char* szSerial, char* szExtra, char* szvVersion)
 {                                                       
-    auto result = MTANetworkWrapper::GetNetWrapper(usID)->GetClientData(address);
+    auto result = MTANetworkWrapper::GetNetWrapper(usID)->GetClientData(ulAddress);
 
-    strcpy(serial, result.serial.c_str());
-    strcpy(extra, result.extra.c_str());
-    strcpy(version, result.version.c_str());
+    strcpy(szSerial, result.serial.c_str());
+    strcpy(szExtra, result.extra.c_str());
+    strcpy(szvVersion, result.version.c_str());
 }
 
 MTAEXPORT void GetModPackets(unsigned short usID, unsigned long address)
@@ -93,13 +100,14 @@ MTAEXPORT SPacketStat GetPacketStat(unsigned short usID)
     return MTANetworkWrapper::GetNetWrapper(usID)->GetPacketStats();
 }
 
-MTAEXPORT void Stop(unsigned short usID) {
+MTAEXPORT void Stop(unsigned short usID)
+{
     MTANetworkWrapper::GetNetWrapper(usID)->Stop();
 }
 
 MTAEXPORT void Destroy(unsigned short usID)
 {
-    auto wrapper = MTANetworkWrapper::GetNetWrapper(usID);
-    wrapper->Destroy();
-    delete wrapper;
+    MTANetworkWrapper* pNetworkWrapper = MTANetworkWrapper::GetNetWrapper(usID);
+    pNetworkWrapper->Destroy();
+    delete pNetworkWrapper;
 }
