@@ -32,7 +32,7 @@ bool MTANetworkWrapper::StaticPacketHandler(unsigned char ucPacketID, const NetS
 
         if (pBitStream->GetNumberOfBitsUsed() > 0)
         {
-            switch ((int)ucPacketID)
+            switch ((ePacketID)ucPacketID)
             {
             case PACKET_ID_PLAYER_JOINDATA:
                 m_pPacketData = CPlayerJoinDataPacket(*pBitStream);
