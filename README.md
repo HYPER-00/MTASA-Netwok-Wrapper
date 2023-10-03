@@ -4,7 +4,7 @@
 # MTASA-Netwok-Wrapper
  MTA:SA net.dll wrapper in C++
 
-# Build Instructions
+# Build Instructions:
  ## Windows
    ### Prerequisites:
    * [Python](https://www.python.org) (3.11 or higher)
