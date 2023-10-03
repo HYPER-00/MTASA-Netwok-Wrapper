@@ -9,13 +9,23 @@ SFixedString<32> pstrRoute;
 
 bool staticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& Socket, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo)
 {
+    printf(PyGILState_Check() ? "GIL Is Hold\n" : "GIL Isn't Hold\n");
+
+    if (PyGILState_GetThisThreadState() == NULL)
+    {
+        printf("no GILState API has been used on the current thread\n");
+    }
+    else
+    {
+        printf("Detected GILState API has used on the current thread\n");
+    }
     return MTANetworkWrapper::GetNetWrapper(Socket)->StaticPacketHandler(ucPacketID, Socket, pBitStream, pNetExtraInfo);
 }
 
 bool MTANetworkWrapper::StaticPacketHandler(unsigned char ucPacketID, const NetServerPlayerID& player, NetBitStreamInterface* pBitStream, SNetExtraInfo* pNetExtraInfo)
 {
     m_Players[player.GetBinaryAddress()] = player;
-    if (true)
+    if (m_bRunning)
     {
         m_uiPacket = ucPacketID;
         m_ulPlayerListAddress = player.GetBinaryAddress();
